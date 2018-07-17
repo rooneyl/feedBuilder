@@ -1,0 +1,25 @@
+{
+  "name": "feedbuilder",
+  "version": "1.0.0",
+  "description": "RSS generating and publishing server for any website. FeedBuilder automatically extract content and data from registered website to create RSS feeds.",
+  "main": "core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rooneyl/FeedBuilder.git"
+  },
+  "keywords": [
+    "feedbuilder"
+  ],
+  "author": "Seongjun Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rooneyl/FeedBuilder/issues"
+  },
+  "homepage": "https://github.com/rooneyl/FeedBuilder#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

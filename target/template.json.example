@@ -1,0 +1,20 @@
+{
+	"feed" :{
+		"title" : "example rss feed",
+		"link" : "//www.example.com",
+		"description" : "example rss web feed",
+		"interval" : 60,
+		"url" : [
+			"www.example.com/?page=1",
+			"www.example.com/?page=2",
+			"www.example.com/?page=3"
+		]
+	},
+
+	"content" : {
+		"title" : "div>div>h1",
+		"link" : "div>div>div",
+		"description" : "div>div>div>td",
+		"pubDate" : "div>div>small"
+	}
+}

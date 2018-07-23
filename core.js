@@ -1,7 +1,9 @@
+const express = require("express");
 const rp = require("request-promise");
 const fs = require("fs");
 const cheerio = require("cheerio");
 const spawn = require("child_process").spawn;
+const base32 = require("hi-base32");
 
 const rawDir = "./rawContent/";
 const targetDir = "./target/";
@@ -14,65 +16,74 @@ const getText = ($, location) => {
     .filter((i, e) => e.nodeType === 3)
     .first()
     .text()
-    .replace(/(\r\n|\n|\r)/gm, "");
+    .replace(/(\r\n|\n|\r)/gm, "")
+    .trim();
 };
 
-const getHref = $ => {
-  return $.find("td>a").attr("href");
+const getHref = ($, location) => {
+  return $.find(location).attr("href");
 };
 
-const feed = {};
+const parseWeb = (url, index) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Call python helper
+      console.log("Start Parsing ::: " + url);
+      let pyProg = spawn("python3", [webScraper, url, base32.encode(url)]);
+
+      // TODO: Async handling
+      pyProg.stdout.on("data", () => {
+        console.log("Parsing Complete ::: " + url);
+        resolve();
+      });
+
+      pyProg.stderr.on("data", data => {
+        console.log("Parsing Failed ::: " + url);
+        console.log(data);
+        reject();
+      });
+    }, index * 10000);
+  });
+};
+
+const createSummary = target => {
+  let summary = [];
+  let content = target.content;
+  target.feed.urls.forEach(url => {
+    console.log("Generating FeedBase ::: " + url);
+    let $ = cheerio.load(fs.readFileSync(rawDir + base32.encode(url)), {
+      decodeEntities: false
+    });
+
+    $(content.root)
+      .find(content.section) // section
+      .each((index, ele) => {
+        let title = getText($(ele), content.title); // Title
+        let link = getHref($(ele), content.link); // Link
+        let pubDate = getText($(ele), content.pubDate); // pubDate
+
+        if (title && link && pubDate) {
+          summary.push({ title, link, pubDate });
+        }
+      });
+  });
+
+  return summary;
+};
 
 fs.readdirSync(targetDir)
+  // Get website list
   .filter(fileName => fileName.endsWith(".json"))
+  // Obtain information about each website
   .map(fileName => JSON.parse(fs.readFileSync(targetDir + fileName)))
+  // Iternate each websites
   .forEach(target => {
-    let { title, link, url } = target.feed;
-    let { root, description, pubDate } = target.content;
-
-    let targetRaw = fs.readFileSync(rawDir + title);
-    let $ = cheerio.load(targetRaw.toString(), { decodeEntities: false });
-    let tmp = $(root)
-      .find("tr") // section
-      .each((index, ele) => {
-        // console.log("Element : " + index);
-        // console.log($(ele).html());
-
-        // Title
-        let t = getText($(ele), "td>a>div");
-
-        // Link
-        let l = getHref($(ele));
-
-        // pubDate
-        let pub = getText($(ele), "td>a>div>small");
-
-        // description
-
-        // console.log(t);
-        // console.log(l);
-        // console.log(pub);
-        feed[index] = { title: t, link: l, pubDate: pub };
-        // console.log(feed.index);
-      });
-    console.log(feed);
-
-    //
-    // let pyProg = spawn("python3", [webScraper, title, url[0]]);
-    //
-    // // TODO : URL => more than one
-    // console.log("Processing : " + title + " at " + url[0]);
-    // pyProg.stdout.on("data", data => {
-    // let targetRaw = fs.readFileSync(rawDir + title);
-    // let $ = cheerio.load(targetRaw);
-    //
-    // console.log(data);
-    // console.log("tbody begin");
-    // console.log($("tbody",targetRaw));
-    //   console.log("tbody end");
-    // });
-    //
-    // pyProg.stderr.on("data", data => {
-    //   console.log(data.toString());
-    // });
+    // setInterval(() => {
+    Promise.all(target.feed.urls.map(parseWeb)).then(() => {
+      let y = createSummary(target);
+      console.log(y);
+    });
+    // }, target.feed.interval * 1000);
   });
+
+express().listen(8081, function() {});

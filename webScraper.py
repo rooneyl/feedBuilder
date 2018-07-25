@@ -1,8 +1,9 @@
 import sys
+import base64
 import cfscrape
 
-fileName = sys.argv[1];
-url = sys.argv[2];
+url = sys.argv[1];
+fileName = sys.argv[2]
 
 scraper = cfscrape.create_scraper()
 output = scraper.get(url)

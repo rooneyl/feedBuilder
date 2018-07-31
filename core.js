@@ -63,7 +63,7 @@ const createSummary = target => {
         let pubDate = getText($(ele), content.pubDate); // pubDate
 
         if (title && link && pubDate) {
-          summary.push({ title, link, pubDate });
+          summary.push({ item: [{ title }, { link }, { pubDate }] });
         }
       });
   });

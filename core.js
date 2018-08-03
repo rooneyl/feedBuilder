@@ -1,5 +1,3 @@
-const express = require("express");
-const rp = require("request-promise");
 const fs = require("fs");
 const cheerio = require("cheerio");
 const spawn = require("child_process").spawn;
@@ -59,11 +57,12 @@ const createSummary = target => {
       .find(content.section) // section
       .each((index, ele) => {
         let title = getText($(ele), content.title); // Title
-        let link = getHref($(ele), content.link); // Link
+        let guid = getHref($(ele), content.link); // Guid
+        let link = target.feed.link + guid; // Link
         let pubDate = getText($(ele), content.pubDate); // pubDate
 
         if (title && link && pubDate) {
-          summary.push({ item: [{ title }, { link }, { pubDate }] });
+          summary.push({ item: [{ title }, { link }, { guid }, { pubDate }] });
         }
       });
   });
@@ -71,7 +70,8 @@ const createSummary = target => {
   return summary;
 };
 
-fs.readdirSync(targetDir)
+export default (generateFeed = fs
+  .readdirSync(targetDir)
   // Get website list
   .filter(fileName => fileName.endsWith(".json"))
   // Obtain information about each website
@@ -84,6 +84,4 @@ fs.readdirSync(targetDir)
       console.log(y);
     });
     // }, target.feed.interval * 1000);
-  });
-
-express().listen(8081, function() {});
+  }));

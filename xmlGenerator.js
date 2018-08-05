@@ -1,6 +1,6 @@
 const xml = require("xml");
 
-const generateXml = (target, summary) => {
+export default (generateXml = (target, summary) => {
   summary.unshift(
     { title: target.feed.title },
     { link: target.feed.link },
@@ -14,4 +14,4 @@ const generateXml = (target, summary) => {
     true
   );
   console.log(xmlComplete);
-};
+});

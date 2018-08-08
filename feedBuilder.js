@@ -1,17 +1,17 @@
 const express = require("express");
 const app = express();
+import buildFeed from "core";
 
 const port = 12121;
 const path = "/feed/";
 
 app.get("/:id", (request, response) => {
-  console.log("Receiving get post at " + request.params.id);
+  console.log(
+    "REQUEST ::: FROM - " + request.params.id + " FOR - " + request.params.id
+  );
   response.set("Content-Type", "text/xml");
   response.sendFile(__dirname + path + request.params.id);
-
-  //TODO : handle unknown ids
 });
 
-app.listen(port, () => {
-  console.log("FeedBuilder Server Listening on Port ::: " + port);
-});
+setInterval(buildFeed(), 3600000);
+app.listen(port);

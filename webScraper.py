@@ -1,15 +1,28 @@
 import sys
 import base64
+import glob
 import cfscrape
-
-url = sys.argv[1];
-fileName = sys.argv[2]
+import json
 
 scraper = cfscrape.create_scraper()
-output = scraper.get(url)
+targets = glob.glob("target/*.json")
 
-f = open("rawContent/"+fileName,"wb+")
-f.write(output.content)
-f.close()
+def generateRawContent( url ):
+    base32url = base64.b32encode(str.encode(url)).decode()
+    with open("rawContent/"+base32url,"wb+") as f:
+        try:
+            output = scraper.get(url)
+            f.write(output.content)
+        except:
+            pass
 
-print("done")
+for target in targets:
+    with open(target) as f:
+        try:
+            urls = json.load(f)['feed']['urls']
+            for url in urls: 
+                generateRawContent(url)
+        except:
+            pass
+
+print('done')

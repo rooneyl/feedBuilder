@@ -22,27 +22,7 @@ const getHref = ($, location) => {
   return $.find(location).attr("href");
 };
 
-const parseWeb = (url, index) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      // Call python helper
-      console.log("Start Parsing ::: " + url);
       let pyProg = spawn("python3", [webScraper, url, base32.encode(url)]);
-
-      // TODO: Async handling
-      pyProg.stdout.on("data", () => {
-        console.log("Parsing Complete ::: " + url);
-        resolve();
-      });
-
-      pyProg.stderr.on("data", data => {
-        console.log("Parsing Failed ::: " + url);
-        console.log(data);
-        reject();
-      });
-    }, index * 10000);
-  });
-};
 
 const createSummary = target => {
   let summary = [];
@@ -70,7 +50,7 @@ const createSummary = target => {
   return summary;
 };
 
-export default (generateFeed = fs
+export default (buildFeed = fs
   .readdirSync(targetDir)
   // Get website list
   .filter(fileName => fileName.endsWith(".json"))

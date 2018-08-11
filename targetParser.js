@@ -3,9 +3,9 @@ const targetDir = "./target/";
 
 const parse = () => {
   return fs
-    .readdirSync(target)
-    .filter(fileName => fileName.endWith(".json"))
+    .readdirSync(targetDir)
+    .filter(fileName => fileName.endsWith(".json"))
     .map(fileName => JSON.parse(fs.readFileSync(targetDir + fileName)));
 };
 
-export default parse;
+module.exports = parse;

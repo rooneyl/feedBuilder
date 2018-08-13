@@ -56,7 +56,6 @@ const buildFeed = target => {
 const generateFeed = targets => {
   targets.forEach(target => {
     const feed = buildFeed(target);
-    // let xmlComplete = xml({ rss: summary }, { declaration: true }, true);
     const completeFeed = xml(
       { rss: [{ channel: feed }, { _attr: { version: "2.0" } }] },
       true

@@ -7,7 +7,6 @@ const rawDir = "./rawContent/";
 const feedDir = "./feed/";
 
 const getText = $ => {
-  console.log($.html());
   return $
     .contents()
     .filter((i, e) => e.nodeType === 3)
@@ -23,8 +22,6 @@ const getHref = $ => {
 
 const selectorParser = ($, selector) => {
   const splitSelector = selector.split(">").map(x => x.trim());
-  let index = 1;
-  console.log(splitSelector + "\n" + $.html());
   for (sel of splitSelector) {
     if ($) {
       if (sel.includes(":")) {
@@ -33,7 +30,6 @@ const selectorParser = ($, selector) => {
       } else {
         $ = $.find(sel);
       }
-      index++;
     }
   }
   return $;
@@ -56,7 +52,6 @@ const buildFeed = target => {
     $(content.root)
       .find(content.section) // section
       .each((index, ele) => {
-        // console.log(selectorParser($(ele), target.content.title));
         let title = selectorParser($(ele), content.title);
         if (title) title = getText(title);
 
@@ -68,10 +63,10 @@ const buildFeed = target => {
 
         let link = target.feed.link + guid; // Link
 
-        console.log("title: " + title);
-        console.log("guid : " + guid);
-        console.log("pub  : " + pubDate);
         if (title && guid) {
+          console.log("title: " + title);
+          console.log("guid : " + guid);
+          console.log("pub  : " + pubDate);
           feed.push({
             item: [{ title }, { link }, { guid }, { pubDate }]
           });

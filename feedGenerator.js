@@ -6,9 +6,9 @@ const cheerio = require("cheerio");
 const rawDir = "./rawContent/";
 const feedDir = "./feed/";
 
-const getText = ($, location) => {
+const getText = $ => {
+  console.log($.html());
   return $
-    .find(location)
     .contents()
     .filter((i, e) => e.nodeType === 3)
     .first()
@@ -17,8 +17,26 @@ const getText = ($, location) => {
     .trim();
 };
 
-const getHref = ($, location) => {
-  return $.find(location).attr("href");
+const getHref = $ => {
+  return $.attr("href");
+};
+
+const selectorParser = ($, selector) => {
+  const splitSelector = selector.split(">").map(x => x.trim());
+  let index = 1;
+  console.log(splitSelector + "\n" + $.html());
+  for (sel of splitSelector) {
+    if ($) {
+      if (sel.includes(":")) {
+        const index = sel.split(":");
+        $ = $.find(index[0]).eq(parseInt(index[1]));
+      } else {
+        $ = $.find(sel);
+      }
+      index++;
+    }
+  }
+  return $;
 };
 
 const buildFeed = target => {
@@ -38,12 +56,22 @@ const buildFeed = target => {
     $(content.root)
       .find(content.section) // section
       .each((index, ele) => {
-        let title = getText($(ele), content.title); // Title
-        let guid = getHref($(ele), content.link); // Guid
-        let link = target.feed.link + guid; // Link
-        let pubDate = getText($(ele), content.pubDate); // pubDate
+        // console.log(selectorParser($(ele), target.content.title));
+        let title = selectorParser($(ele), content.title);
+        if (title) title = getText(title);
 
-        if (title && guid && pubDate) {
+        let guid = selectorParser($(ele), content.link);
+        if (guid) guid = getHref(guid);
+
+        let pubDate = selectorParser($(ele), content.pubDate);
+        if (pubDate) pubDate = getText(pubDate);
+
+        let link = target.feed.link + guid; // Link
+
+        console.log("title: " + title);
+        console.log("guid : " + guid);
+        console.log("pub  : " + pubDate);
+        if (title && guid) {
           feed.push({
             item: [{ title }, { link }, { guid }, { pubDate }]
           });

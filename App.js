@@ -32,5 +32,5 @@ app.get("/:id", (request, response) => {
 });
 
 startApp();
-setInterval(startApp, 3600000);
+setInterval(startApp, 600000);
 app.listen(port);

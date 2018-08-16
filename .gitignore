@@ -9,3 +9,5 @@ target/*
 
 rawContent/*
 !rawContent/rawContent.html.example
+
+log/*

@@ -5,7 +5,6 @@ feed/*
 !feed/template.rss.example
 
 target/*
-!target/template.json.example
 
 rawContent/*
 !rawContent/rawContent.html.example

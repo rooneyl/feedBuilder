@@ -21,6 +21,7 @@
 	},
 	"homepage": "https://github.com/rooneyl/FeedBuilder#readme",
 	"dependencies": {
+		"app-root-path": "^2.1.0",
 		"cheerio": "^1.0.0-rc.2",
 		"express": "^4.16.4",
 		"hi-base32": "^0.5.0",

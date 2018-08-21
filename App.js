@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const feedGenerator = require("./feedGenerator");
+const feedCollector = require("./feedCollector");
 const mongodb = require("./config/dbClient.js");
 const logger = require("./config/logger.js");
 
@@ -32,7 +32,7 @@ const startFeedBuilder = async () => {
   logger.info("EXP - server is listening " + port);
 
   // start feed building
-  feedGenerator();
+  feedCollector();
 };
 
 startFeedBuilder();

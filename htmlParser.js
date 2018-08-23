@@ -49,10 +49,10 @@ const parseHtml = async ($, target) => {
   let link = target.feed.link + guid; // Link
 
   if (title && guid && pubDate) {
-    console.log("title: " + title);
-    console.log("guid : " + guid);
-    console.log("link : " + link);
-    console.log("pub  : " + pubDate);
+    // console.log("title: " + title);
+    // console.log("guid : " + guid);
+    // console.log("link : " + link);
+    // console.log("pub  : " + pubDate);
 
     const db = mongodb.getDB(target.feed.title);
     const exist = await db.find({ guid }).count();
@@ -61,7 +61,7 @@ const parseHtml = async ($, target) => {
       const decode = { decodeEntities: false };
       const $ = cheerio.load(desHtml, decode);
       const description = $(content.description).html();
-      console.log(description);
+      // console.log(description);
       db.insertOne({ title, guid, pubDate, description });
     }
   }

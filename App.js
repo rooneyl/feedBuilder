@@ -4,6 +4,7 @@ const app = express();
 const feedCollector = require("./feedCollector");
 const mongodb = require("./config/dbClient.js");
 const logger = require("./config/logger.js");
+const getRSS = require("./feedGenerator.js");
 
 const port = 12121;
 const path = __dirname + "/feed/";
@@ -20,12 +21,13 @@ const startFeedBuilder = async () => {
   }
 
   // server initialization
-  app.get("/:id", (request, response) => {
+  app.get("/:id", (req, res) => {
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    logger.info("EXP - GET - '" + ip + "' -> " + request.params.id);
-    response.set("Content-Type", "text/xml; charset=uft-8");
-    response.sendFile(path + request.params.id);
-    logger.info("EXP - R - '" + ip + "' -> " + path + request.params.id);
+    logger.info("EXP - GET - '" + ip + "' -> " + req.params.id);
+    res.set("Content-Type", "text/xml; charset=uft-8");
+    getRSS(req.params.id).then(rss => {
+      res.send(rss);
+    });
   });
 
   app.listen(port);

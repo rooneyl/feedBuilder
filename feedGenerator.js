@@ -23,6 +23,8 @@ const getRSS = async id => {
   const contentDB = await mongodb.getDB(id);
   const contents = await contentDB.find({}, projection).toArray();
   const contentsXML = contents.map(content => {
+    content.guid = [content.guid, { _attr: { isPermaLink: false } }];
+    content.description = { _cdata: content.description };
     return { item: encapsulator(content) };
   });
 

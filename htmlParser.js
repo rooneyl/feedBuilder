@@ -60,7 +60,10 @@ const parseHtml = async ($, target) => {
       const desHtml = await rp(link);
       const decode = { decodeEntities: false };
       const $ = cheerio.load(desHtml, decode);
-      const description = $(content.description).html();
+      const description = $(content.description)
+        .text()
+        .replace(/(\n)/gm, "");
+
       // console.log(description);
       db.insertOne({ title, guid, pubDate, description });
     }

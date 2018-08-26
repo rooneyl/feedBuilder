@@ -13,9 +13,9 @@ const startFeedBuilder = async () => {
   // mongodb connection
   try {
     await mongodb.connect();
-    logger.info("DB - connection established");
+    logger.info("DB - Successfully established connection with Mongodb");
   } catch (err) {
-    logger.error("DB - connection failed");
+    logger.error("DB - Failed to establish connection with Mongodb");
     logger.error(err);
     process.exit(1);
   }
@@ -25,9 +25,13 @@ const startFeedBuilder = async () => {
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     logger.info("EXP - GET - '" + ip + "' -> " + req.params.id);
     res.set("Content-Type", "text/xml; charset=uft-8");
-    getRSS(req.params.id).then(rss => {
-      res.send(rss);
-    });
+    getRSS(req.params.id)
+      .then(rss => {
+        res.send(rss);
+      })
+      .catch(() => {
+        res.sendStatus(404);
+      });
   });
 
   app.listen(port);

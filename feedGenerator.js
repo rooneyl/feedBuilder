@@ -14,11 +14,11 @@ const encapsulator = obj => {
 };
 
 const getRSS = async id => {
-  const query = { title: id };
   const projection = { projection: { _id: false } };
-  const feedDB = await mongodb.getDB("collectionList");
-  const feedInfo = await feedDB.findOne(query, projection);
-  const feedInfoXML = encapsulator(feedInfo);
+
+  const headerDB = await mongodb.getDB("collectionList");
+  const header = await headerDB.findOne({ _id: id }, projection);
+  const headerXML = encapsulator(header);
 
   const contentDB = await mongodb.getDB(id);
   const contents = await contentDB.find({}, projection).toArray();
@@ -28,9 +28,12 @@ const getRSS = async id => {
     return { item: encapsulator(content) };
   });
 
-  const body = feedInfoXML.concat(contentsXML);
-  const header = { rss: [{ channel: body }, { _attr: { version: "2.0" } }] };
-  return xml(header, true);
+  const feedContent = headerXML.concat(contentsXML);
+  const feed = {
+    rss: [{ channel: feedContent }, { _attr: { version: "2.0" } }]
+  };
+
+  return xml(feed, true);
 };
 
 module.exports = getRSS;

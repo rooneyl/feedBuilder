@@ -14,7 +14,7 @@ npm
 
 Then, you need to create a configuration file to the target website.
 *  target/example.json - sepecifies the channel
-```json
+```js
 {
   "id": "example",                                      // url route
   "title": "this is example website",                   // title

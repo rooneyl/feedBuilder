@@ -56,7 +56,7 @@ const exampleParser = async $ => {
 
 module.exports = exampleParser;
 ```
-Please read [CONFIG.md](https://gist.github.com/) for details on how to configure.
+Please read [CONFIG.md](CONFIG.md) for details on how to configure.
 
 ### Installing
 

@@ -1,35 +1,34 @@
 {
-	"name": "feedbuilder",
-	"version": "1.0.0",
-	"description": "RSS generating and publishing server for any website. FeedBuilder automatically extract content and data from registered website to create RSS feeds.",
-	"main": "core.js",
-	"scripts": {
-		"start": "node App.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/rooneyl/FeedBuilder.git"
-	},
-	"keywords": [
-		"feedbuilder"
-	],
-	"author": "Seongjun Lee",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/rooneyl/FeedBuilder/issues"
-	},
-	"homepage": "https://github.com/rooneyl/FeedBuilder#readme",
-	"dependencies": {
-		"app-root-path": "^2.1.0",
-		"cheerio": "^1.0.0-rc.2",
-		"express": "^4.16.4",
-		"hi-base32": "^0.5.0",
-		"mongodb": "^3.1.10",
-		"request": "^2.88.0",
-		"request-promise": "^4.2.2",
-		"winston": "^3.1.0",
-		"winston-daily-rotate-file": "^3.5.1",
-		"xml": "^1.0.1"
-	}
+    "name": "feedbuilder",
+    "version": "1.0.0",
+    "description": "RSS generating and publishing server for any website. FeedBuilder automatically extract content and data from registered website to create RSS feeds.",
+    "main": "core.js",
+    "scripts": {
+        "start": "node App.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rooneyl/FeedBuilder.git"
+    },
+    "keywords": [
+        "feedbuilder"
+    ],
+    "author": "Seongjun Lee",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/rooneyl/FeedBuilder/issues"
+    },
+    "homepage": "https://github.com/rooneyl/FeedBuilder#readme",
+    "dependencies": {
+        "app-root-path": "^2.1.0",
+        "cheerio": "^1.0.0-rc.2",
+        "express": "^4.16.4",
+        "mongodb": "^3.1.10",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.2",
+        "winston": "^3.1.0",
+        "winston-daily-rotate-file": "^3.5.1",
+        "xml": "^1.0.1"
+    }
 }

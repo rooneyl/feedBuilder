@@ -1,11 +1,15 @@
 const rp = require("request-promise");
 const cheerio = require("cheerio");
-const logger = require("./config/logger");
-const parseTarget = require("./targetParser");
-const mongodb = require("./config/dbClient.js");
+
+const reqlib = require("app-root-path").require;
+const logger = reqlib("/config/logger");
+const mongodb = reqlib("/config/dbClient");
+const parseTarget = reqlib("/modules/targetParser");
 
 const parseHtml = async ($, target) => {
-    const dedicatedParser = require("./target/" + target.id);
+    console.log("dedicatedParser start");
+    const dedicatedParser = reqlib("/target/" + target.id);
+    console.log("dedicatedParser startEnd");
     const item = await dedicatedParser($);
 
     if (item) {
@@ -23,6 +27,7 @@ const buildFeed = async (target) => {
         const html = await rp(target.url);
         const decode = { decodeEntities: false };
         const $ = cheerio.load(html, decode);
+        console.log("ALPTHA1:");
 
         // Divide html dom into each story section
         // the story section is sent to htmlParser

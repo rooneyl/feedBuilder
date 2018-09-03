@@ -1,5 +1,6 @@
 const xml = require("xml");
-const mongodb = require("./config/dbClient");
+const reqlib = require("app-root-path").require;
+const mongodb = reqlib("/config/dbClient");
 
 const encapsulator = (obj) => {
     const array = [];

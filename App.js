@@ -1,13 +1,12 @@
 const express = require("express");
 const app = express();
 
-const feedCollector = require("./feedCollector");
+const feedCollector = require("./modules/feedCollector");
 const mongodb = require("./config/dbClient.js");
 const logger = require("./config/logger.js");
-const getRSS = require("./feedGenerator.js");
+const getRSS = require("./modules/feedGenerator.js");
 
 const port = 12121;
-const path = __dirname + "/feed/";
 
 const startFeedBuilder = async () => {
     // mongodb connection

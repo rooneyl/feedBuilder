@@ -1,5 +1,6 @@
 const fs = require("fs");
-const targetDir = "./target/";
+const appRoot = require("app-root-path");
+const targetDir = appRoot + "/target/";
 
 const parse = () => {
     if (!fs.existsSync(targetDir)) {

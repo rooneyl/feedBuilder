@@ -1,6 +1,7 @@
 const rp = require("request-promise");
 const cheerio = require("cheerio");
-const mongodb = require("./config/dbClient.js");
+const reqlib = require("app-root-path").require;
+const mongodb = reqlib("/config/dbClient");
 
 const getText = ($) => {
     return $.contents()

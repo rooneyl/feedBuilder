@@ -21,8 +21,7 @@ const startFeedBuilder = async () => {
 
     // server initialization
     app.get("/:id", (req, res) => {
-        const ip =
-            req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+        const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
         logger.info("EXP - GET - '" + ip + "' -> " + req.params.id);
         res.set("Content-Type", "text/xml; charset=uft-8");
         getRSS(req.params.id)

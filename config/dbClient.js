@@ -44,7 +44,7 @@ const collection = async (target) => {
     if (currentSize == 0) {
         logger.info("DB - collection[" + target.id + "] does not exist");
         logger.info("DB - creating capped collection[" + target.id + "]");
-        const capped = { capped: true, size: 524288, max: 50 };
+        const capped = { capped: true, size: 2000000, max: 30 };
         try {
             await _db.createCollection(target.id, capped);
             logger.info("DB - collection[" + target.id + "] created");

@@ -7,9 +7,7 @@ const mongodb = reqlib("/config/dbClient");
 const parseTarget = reqlib("/modules/targetParser");
 
 const parseHtml = async ($, target) => {
-    console.log("dedicatedParser start");
     const dedicatedParser = reqlib("/target/" + target.id);
-    console.log("dedicatedParser startEnd");
     const item = await dedicatedParser($);
 
     if (item) {
@@ -27,7 +25,6 @@ const buildFeed = async (target) => {
         const html = await rp(target.url);
         const decode = { decodeEntities: false };
         const $ = cheerio.load(html, decode);
-        console.log("ALPTHA1:");
 
         // Divide html dom into each story section
         // the story section is sent to htmlParser
@@ -35,6 +32,7 @@ const buildFeed = async (target) => {
         $(target.root)
             .find(target.section)
             .each((index, ele) => parseHtml($(ele), target));
+			
     } catch (err) {
         logger.error("FEED - error occured while requesting web data");
         logger.error("FEED -       from -> " + target.url);
